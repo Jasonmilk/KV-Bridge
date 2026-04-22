@@ -1,4 +1,4 @@
-from typing import Tuple, Any, List, Dict
+from typing import Tuple, Any, List, Dict, Optional
 import httpx
 from anthropic import AsyncAnthropic
 from datetime import datetime
@@ -43,7 +43,7 @@ class AnthropicAdapter(BaseAdapter):
                         "anthropic-beta": "prompt-caching-2024-07-31"
                     },
                     headers={
-                        "x-api-key": self.settings.anthropic_api_key,
+                        "Authorization": f"Bearer {self.settings.tuck_api_key}",
                         "traceparent": f"00-{trace_id}-{self._generate_span_id()}-01"
                     }
                 )
@@ -145,7 +145,6 @@ class AnthropicAdapter(BaseAdapter):
 
     async def health_check(self) -> bool:
         if self.settings.tuck_enabled:
-            # Check Tuck health
             try:
                 async with httpx.AsyncClient(timeout=5.0) as client:
                     resp = await client.get(f"{self.settings.tuck_endpoint}/health")
@@ -153,7 +152,6 @@ class AnthropicAdapter(BaseAdapter):
             except Exception:
                 return False
         else:
-            # Check Anthropic health
             try:
                 await self.client.models.list(limit=1)
                 return True

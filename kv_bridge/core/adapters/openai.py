@@ -1,4 +1,4 @@
-from typing import Tuple, Any, Dict
+from typing import Tuple, Any, Dict, Optional
 import httpx
 from openai import AsyncOpenAI
 from datetime import datetime
@@ -41,7 +41,7 @@ class OpenAIAdapter(BaseAdapter):
                         "cache_ttl": self.settings.openai_cache_ttl,
                     },
                     headers={
-                        "Authorization": f"Bearer {self.settings.openai_api_key}",
+                        "Authorization": f"Bearer {self.settings.tuck_api_key}",
                         "traceparent": f"00-{trace_id}-{self._generate_span_id()}-01"
                     }
                 )
