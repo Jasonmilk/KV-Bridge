@@ -1,0 +1,35 @@
+# KV-Bridge Default Configuration
+# Override these with environment variables or .env file
+
+server:
+  host: 0.0.0.0
+  port: 8687
+
+economic:
+  min_savings_threshold: 200
+  skip_reorder_below_tokens: 4000
+
+vfd:
+  index_path: ./vfd_index.db
+  lru_max_size: 100
+
+shadow:
+  ttl_seconds: 3600
+  piggyback_cost_ratio: 0.1
+
+backends:
+  default: composite
+  anthropic:
+    model: claude-3-5-sonnet-20241022
+  openai:
+    model: gpt-4o
+    cache_ttl: 3600
+  vllm:
+    base_url: http://localhost:8000
+    model: Qwen/Qwen2.5-7B-Instruct
+  sglang:
+    base_url: http://localhost:30000
+    model: Qwen/Qwen2.5-7B-Instruct
+
+logging:
+  level: INFO
